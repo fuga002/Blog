@@ -8,4 +8,6 @@ public class UserRepository: IUserRepository
     //Add
     //Update
     //Delete
+
+    //Ertaga kechgacha oxirgi muxlad
 }
