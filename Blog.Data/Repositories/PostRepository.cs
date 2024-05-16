@@ -9,4 +9,6 @@ public class PostRepository: IPostRepository
     //Delete
 
     //Actionlar asyxron bo'lishi kere
+
+    //Misol uchun public async Task Example(){}
 }
