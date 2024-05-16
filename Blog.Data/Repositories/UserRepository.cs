@@ -9,5 +9,5 @@ public class UserRepository: IUserRepository
     //Update
     //Delete
 
-    //Ertaga kechgacha oxirgi muxla
+    //Ertaga kechgacha oxirgi muxlad
 }
