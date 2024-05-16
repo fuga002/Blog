@@ -8,4 +8,6 @@ public class BlogRepository: IBlogRepository
     //Add
     //Update
     //Delete
+
+    //Ertagacha
 }
