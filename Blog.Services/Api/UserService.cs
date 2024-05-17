@@ -28,7 +28,7 @@ public class UserService
         return user.ParseToModel();
     }
 
-    public async Task AddUser(CreateUserModel model)
+    public async Task<UserDto> AddUser(CreateUserModel model)
     {
         await IsExist(model.Username);
 
@@ -42,6 +42,7 @@ public class UserService
         var passwordHash = new PasswordHasher<User>().HashPassword(user, model.Password);
         user.PasswordHash = passwordHash;
         await _userRepository.Add(user);
+        return user.ParseToModel();
     }
 
     public async Task<UserDto> Login(LoginUserModel model)
@@ -58,11 +59,11 @@ public class UserService
     public async Task<UserDto> UpdateUser(Guid userId,UpdateUserModel model)
     {
         var user = await _userRepository.GetById(userId);
-        if(!string.IsNullOrEmpty(model.Firstname))
+        if(!string.IsNullOrWhiteSpace(model.Firstname))
             user.Firstname = model.Firstname;
-        if(!string.IsNullOrEmpty(model.Lastname))
+        if(!string.IsNullOrWhiteSpace(model.Lastname))
             user.Lastname = model.Lastname;
-        if (!string.IsNullOrEmpty(model.Username))
+        if (!string.IsNullOrWhiteSpace(model.Username))
         {
             await IsExist(model.Username);
             user.Username = model.Username;
@@ -83,6 +84,6 @@ public class UserService
     private async Task IsExist(string username)
     {
         var isExist = await _userRepository.GetByUsername(username);
-        if (isExist != null) throw new Exception($"User already exists with this {username}");
+        if (isExist != null) throw new Exception($"User already exists with this \"{username}\"");
     }
 }
