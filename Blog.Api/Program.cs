@@ -1,6 +1,6 @@
 using Blog.Data.Context;
 using Blog.Data.Repositories;
-using Microsoft.AspNetCore.Identity;
+using Blog.Services.Api;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +19,8 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
