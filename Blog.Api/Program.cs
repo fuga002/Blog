@@ -1,5 +1,6 @@
 using Blog.Data.Context;
 using Blog.Data.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,3 +36,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
