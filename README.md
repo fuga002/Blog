@@ -5,9 +5,11 @@
 > [!IMPORTANT]
 > Api collections.
 > > UserApi routes
-> > > [GET] api/users/	
->>> [GET] api/users/{userId} <br>
->>> [POST] api/users/ <br>
->>> [POST] api/users/login<br>
->>> [PUT] api/users/{userId}<br>
->>> [DELETE] api/users/{userId}<br>
+> > > [GET] api/users/
+```
+[GET] api/users/{userId}
+[POST] api/users/ 
+[POST] api/users/login
+[PUT] api/users/{userId}
+[DELETE] api/users/{userId}
+```
