@@ -31,7 +31,7 @@ public static class ParseToDtoExtension
         }
         return userDtos;
     }
-    public static BlogDto ParseToModel(this Blog.Data.Entities.Blog blog)
+    public static BlogDto ParseToModel(this Data.Entities.Blog blog)
     {
         return new BlogDto()
         {
@@ -40,7 +40,7 @@ public static class ParseToDtoExtension
             Description = blog.Description
         };
     }
-    public static List<BlogDto> ParseModels(this List<Blog.Data.Entities.Blog>? blogs)
+    public static List<BlogDto> ParseModels(this List<Data.Entities.Blog>? blogs)
     {
         if (blogs == null || blogs.Count == 0) return new List<BlogDto>();
         var blogDtos = new List<BlogDto>();
