@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace Blog.Common.Models.Post;
-    public class CreatPostModel
+    public class CreatePostModel
     {
         [Required]
         public string Title { get; set; }
