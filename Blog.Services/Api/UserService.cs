@@ -25,10 +25,10 @@ public class UserService
     public async Task<UserDto> GetUserById(Guid id)
     {
         var user = await _userRepository.GetById(id);
-        return user.ParseToModel();
+        return user.ParseModel();
     }
 
-    public async Task<UserDto> AddUser(CreateUserModel model)
+    public async Task<UserDto> AddUser(CreateUserModel model)   
     {
         await IsExist(model.Username);
 
@@ -42,7 +42,7 @@ public class UserService
         var passwordHash = new PasswordHasher<User>().HashPassword(user, model.Password);
         user.PasswordHash = passwordHash;
         await _userRepository.Add(user);
-        return user.ParseToModel();
+        return user.ParseModel();
     }
 
     public async Task<UserDto> Login(LoginUserModel model)
@@ -53,7 +53,7 @@ public class UserService
         var result = new  PasswordHasher<User>().VerifyHashedPassword(user,user.PasswordHash,model.Password);
         if (result == PasswordVerificationResult.Failed)
             throw new Exception("Password failed");
-        return user.ParseToModel();
+        return user.ParseModel();
     }
 
     public async Task<UserDto> UpdateUser(Guid userId,UpdateUserModel model)
@@ -70,7 +70,7 @@ public class UserService
         }
 
         await _userRepository.Update(user);
-        return user.ParseToModel();
+        return user.ParseModel();
     }
 
     public async Task<string> DeleteUser(Guid userId)
