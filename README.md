@@ -5,9 +5,9 @@
 > [!IMPORTANT]
 > Api collections.
 > > UserApi routes
-> > > [GET] api/users/	
->>> [!GET] api/users/{userId} <br>
->>> [POST] api/users/ <br>
->>> [POST] api/users/login<br>
->>> [PUT] api/users/{userId}<br>
->>> [DELETE] api/users/{userId}<br>
+> > >  <span style="color:blue;">[GET]</span> api/users/ <br>
+>>> <span style="color:blue;">[GET]</span> api/users/{userId} <br>
+>>> <span style="color:green;">[POST]</span> api/users/ <br>
+>>> <span style="color:green;">[POST]</span> api/users/login<br>
+>>> <span style="color:yellow;">[PUT]</span> api/users/{userId}<br>
+>>> <span style="color:red;">[DELETE]</span> api/users/{userId}<br>
