@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blog.Common.Dtos
+﻿namespace Blog.Common.Dtos
 {
-    internal class PostDto
+    public class PostDto
     {
     }
 }
