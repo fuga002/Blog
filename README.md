@@ -6,7 +6,7 @@
 > Api collections.
 > > UserApi routes
 > > > [GET] api/users/	
->>> <h color = "blue">[GET]</h> api/users/{userId} <br>
+>>> <h color = "#0000FF">[GET]</h> api/users/{userId} <br>
 >>> [POST] api/users/ <br>
 >>> [POST] api/users/login<br>
 >>> [PUT] api/users/{userId}<br>
