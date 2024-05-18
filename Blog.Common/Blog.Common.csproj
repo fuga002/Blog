@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Blog.Data\Blog.Data.csproj" />
+  </ItemGroup>
+
 </Project>
