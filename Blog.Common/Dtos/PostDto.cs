@@ -12,6 +12,5 @@ namespace Blog.Common.Dtos
 
         public string AuthorFullName { get; set; }
 
-        public int BlogDtoId { get; set; }
     }
 }
