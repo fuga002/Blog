@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Common.Dtos
@@ -11,6 +12,5 @@ namespace Blog.Common.Dtos
         public string FileUrl { get; set; }
 
         public string AuthorFullName { get; set; }
-
     }
 }
