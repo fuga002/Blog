@@ -1,5 +1,7 @@
 ﻿using Blog.Common.Dtos;
 using Blog.Data.Entities;
+using Mapster;
+using MapsterMapper;
 
 namespace Blog.Services.Extensions;
 
@@ -14,9 +16,8 @@ public static class ParseToDtoExtension
             Lastname = user.Lastname,
             Username = user.Username,
             CreatedAt = user.CreatedAt,
-            PhotoUrl = user.PhotoUrl
-
-            //blogs
+            PhotoUrl = user.PhotoUrl,
+            Blogs = user.Blogs.ParseModels()
         };
     }
 
@@ -30,4 +31,23 @@ public static class ParseToDtoExtension
         }
         return userDtos;
     }
+
+    public static BlogDto ParseToModel(this Blog.Data.Entities.Blog blog)
+    {
+        BlogDto blogDto = blog.Adapt<BlogDto>();
+        return blogDto;
+    }
+
+    public static List<BlogDto> ParseModels(this List<Blog.Data.Entities.Blog>? blogs)
+    {
+        var dtos = new List<BlogDto>();
+        if (blogs == null || blogs.Count == 0) return new List<BlogDto>();
+        foreach (var blog in blogs)
+        {
+            dtos.Add(blog.ParseToModel());
+        }
+
+        return dtos;
+    }
+
 }

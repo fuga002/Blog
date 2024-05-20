@@ -43,7 +43,7 @@ public class BlogRepository: IBlogRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteById(Entities.Blog blog)
+    public async Task Delete(Entities.Blog blog)
     {
         _dbContext.Blogs.Remove(blog);
         await _dbContext.SaveChangesAsync();

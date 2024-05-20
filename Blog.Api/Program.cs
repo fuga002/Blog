@@ -21,6 +21,7 @@ builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<BlogService>();
 
 var app = builder.Build();
 

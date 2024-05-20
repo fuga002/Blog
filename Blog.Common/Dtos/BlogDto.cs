@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Blog.Data.Entities;
-
-namespace Blog.Common.Dtos;
+﻿namespace Blog.Common.Dtos;
 
 public class BlogDto
 {

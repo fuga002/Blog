@@ -19,5 +19,5 @@ public class Post
     public string AuthorFullName { get; set; }
 
     public int BlogId { get; set; }
-    public Blog? Blog { get; set; }
+    public virtual Blog? Blog { get; set; }
 }

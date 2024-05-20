@@ -11,6 +11,12 @@ public class BlogDbContext:DbContext
 
     }
 
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Entities.Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }

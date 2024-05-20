@@ -17,5 +17,5 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public string? PhotoUrl { get; set; }
 
-    public List<Blog>? Blogs { get; set; }
+    public virtual List<Blog>? Blogs { get; set; }
 }
