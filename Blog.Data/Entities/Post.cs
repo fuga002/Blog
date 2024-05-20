@@ -15,7 +15,6 @@ public class Post
 
     public DateTime CreatedDate { get; set; }  = DateTime.UtcNow;
     [Required]
-
     public string AuthorFullName { get; set; }
 
     public int BlogId { get; set; }
