@@ -23,12 +23,6 @@ namespace Blog.Services.Api
         }
 
 
-        private async Task CheckPosts(Guid userId, int blogId)
-        {
-            var user = await _userRepository.GetById(userId);
-            var blog = user.Blogs?.FirstOrDefault(blog => blog.Id == blogId);
-            var posts = blog?.Posts?.FirstOrDefault(post => post.Id == blogId);
-            if (posts is null) throw new Exception("The posts are not relevant!");
-        }
+
     }
 }
