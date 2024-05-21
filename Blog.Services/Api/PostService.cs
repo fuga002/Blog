@@ -16,13 +16,26 @@ namespace Blog.Services.Api
         }
 
         // These method is not relevant to user and blog
-        public async Task<List<PostDto>> GetAllPosts(Guid userId, int blogId)
+        public async Task<List<PostDto>> GetAllPosts()
         {
             var allPosts = await _postRepository.GetAll();
             return allPosts.ParseModels();
         }
 
+        public async Task<List<PostDto>> GetAllPosts(Guid userId, int blogId)
+        {
+            var posts = await FilteredPosts(userId, blogId);
+            return posts.ParseModels();
+        }
 
+        private async Task<List<Post>> FilteredPosts(Guid userId, int blogId)
+        {
+            var user = await _userRepository.GetById(userId);
+            var blog = user.Blogs?.FirstOrDefault(blog => blog.Id == blogId);
+            var filteredPosts = blog?.Posts?.Where(post => post.Id == blogId);
+            if (filteredPosts is null) return null;
+            return filteredPosts.ToList();
+        }
 
     }
 }
