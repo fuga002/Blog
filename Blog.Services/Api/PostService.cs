@@ -43,7 +43,7 @@ namespace Blog.Services.Api
             var user = await _userRepository.GetById(userId);
             var blog = user.Blogs?.FirstOrDefault(blog => blog.Id == blogId);
             var filteredPosts = blog?.Posts?.Where(post => post.Id == blogId);
-            if (filteredPosts is null) throw new Exception("The object is not found");
+            if (filteredPosts is null) return null;
             return filteredPosts.ToList();
         }
 
@@ -52,7 +52,7 @@ namespace Blog.Services.Api
             var user = await _userRepository.GetById(userId);
             var blog = user.Blogs?.FirstOrDefault(blog => blog.Id == blogId);
             var filteredPosts = blog?.Posts?.FirstOrDefault(post => post.Id == postId);
-            if (filteredPosts is null) return null;
+            if (filteredPosts is null) throw new Exception("The object is not found");
             return filteredPosts;
         }
 
