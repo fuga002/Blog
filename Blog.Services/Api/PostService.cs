@@ -22,6 +22,7 @@ namespace Blog.Services.Api
             return allPosts.ParseModels();
         }
 
+        // These method is relevant to user and blog
         public async Task<List<PostDto>> GetAllPosts(Guid userId, int blogId)
         {
             var posts = await FilteredPosts(userId, blogId);
