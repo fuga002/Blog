@@ -24,6 +24,19 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<PostService>();
 
+/*
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyCors", policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();
+        policy.AllowCredentials();
+    });
+} );
+*/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +46,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
