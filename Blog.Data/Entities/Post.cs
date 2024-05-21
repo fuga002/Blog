@@ -11,7 +11,7 @@ public class Post
     [Required]
     public string Content { get; set; }
    
-    public string FileUrl { get; set; }
+    public string? FileUrl { get; set; }
 
     public DateTime CreatedDate { get; set; }  = DateTime.UtcNow;
     [Required]
