@@ -50,4 +50,22 @@ public static class ParseToDtoExtension
         return dtos;
     }
 
+
+    public static PostDto ParseToModel(this Post post )
+    {
+        PostDto postDto = post.Adapt<PostDto>();
+        return postDto;
+    }
+
+    public static List<PostDto> ParseModels(this List<Post>? posts)
+    {
+        var dtos = new List<PostDto>();
+        if (posts == null || posts.Count == 0) return new List<PostDto>();
+        foreach(var post in posts)
+        {
+            dtos.Add(post.ParseToModel());
+        }
+        return dtos;
+    }
+
 }
