@@ -21,6 +21,13 @@ namespace Blog.Services.Api
             var allPosts = await _postRepository.GetAll();
             return allPosts.ParseModels();
         }
+        public async Task<PostDto> GetPostById(Guid Userid, int Blogid, int Postid)
+        {
+            var userId = await _userRepository.GetById(Userid);
+            var blogId = userId?.Blogs?.FirstOrDefault(p => p.Id == Blogid);
+            var postId = blogId?.Posts?.FirstOrDefault(p => p.Id == Postid);
+            return postId.ParseToModel();
+        }
 
         // These method is relevant to user and blog
         public async Task<List<PostDto>> GetAllPosts(Guid userId, int blogId)
