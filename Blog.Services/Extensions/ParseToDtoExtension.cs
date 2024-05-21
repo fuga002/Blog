@@ -51,7 +51,7 @@ public static class ParseToDtoExtension
     }
 
 
-    public static PostDto ParseToModel(this Post post )
+    public static PostDto ParseToModel(this Post? post )
     {
         PostDto postDto = post.Adapt<PostDto>();
         return postDto;
