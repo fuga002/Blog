@@ -91,8 +91,6 @@ public class PostService
         await _postRepository.DeleteById(post);
         return "Deleted successfully";
     }
-
-        
     private async Task<List<Post>?> FilteredPosts(Guid userId, int blogId)
     {
         var blog = await CheckBlog(userId, blogId);
