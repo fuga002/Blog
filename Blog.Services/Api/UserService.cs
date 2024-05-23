@@ -36,7 +36,7 @@ public class UserService
         {
             Firstname = model.Firstname,
             Lastname = model.Lastname,
-            Username = model.Username
+            Username = model.Username.ToLower()
         };
 
         var passwordHash = new PasswordHasher<User>().HashPassword(user, model.Password);
@@ -47,7 +47,7 @@ public class UserService
 
     public async Task<UserDto> Login(LoginUserModel model)
     {
-        var user = await _userRepository.GetByUsername(model.UserName);
+        var user = await _userRepository.GetByUsername(model.UserName.ToLower());
         if (user == null) throw new Exception("Invalid Username");
         
         var result = new  PasswordHasher<User>().VerifyHashedPassword(user,user.PasswordHash,model.Password);
