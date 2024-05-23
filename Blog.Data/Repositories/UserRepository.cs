@@ -28,7 +28,7 @@ public class UserRepository: IUserRepository
 
     public async Task<User?> GetByUsername(string username)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username.ToLower());
         return user;
     }
 
