@@ -36,7 +36,7 @@ public class UserService
         {
             Firstname = model.Firstname,
             Lastname = model.Lastname,
-            Username = model.Username
+            Username = model.Username.ToLower(),
         };
 
         var passwordHash = new PasswordHasher<User>().HashPassword(user, model.Password);
@@ -63,7 +63,7 @@ public class UserService
             user.Firstname = model.Firstname;
         if(!string.IsNullOrWhiteSpace(model.Lastname))
             user.Lastname = model.Lastname;
-        if (!string.IsNullOrWhiteSpace(model.Username))
+        if (!string.IsNullOrWhiteSpace(model.Username.ToLower()))
         {
             await IsExist(model.Username);
             user.Username = model.Username;
