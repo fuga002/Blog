@@ -54,10 +54,12 @@ public class BlogService
 
         Data.Entities.Blog blog = new()
         {
-            Name = model.Name,
+          
             Description = model.Description,
             UserId = userId
         };
+        if(blog.Name.ToLower() == model.Name.ToLower()) 
+            blog.Name = model.Name;
         await _blogRepository.Add(blog);
         return blog.ParseToModel();
     }
@@ -105,6 +107,7 @@ public class BlogService
     {
         var blog = await _blogRepository.GetByName(name);
         if (blog is not null) throw new Exception($"This name \"{name}\" is already exist ");
+        
     }
 
     private async Task<Data.Entities.Blog> GetBlogById(Guid userId, int blogId)
