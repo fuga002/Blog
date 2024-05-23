@@ -27,7 +27,7 @@ public class BlogRepository: IBlogRepository
 
     public async Task<Entities.Blog?> GetByName(string name)
     {
-        var blog = await _dbContext.Blogs.FirstOrDefaultAsync(b => b.Name == name);
+        var blog = await _dbContext.Blogs.FirstOrDefaultAsync(b => b.Name.ToLower() == name.ToLower());
         return blog;
     }
 
