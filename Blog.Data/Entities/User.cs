@@ -16,6 +16,9 @@ public class User
     public string PasswordHash { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public string? PhotoUrl { get; set; }
+    [Required]
+
+    public string Role { get; set; }
 
     public virtual List<Blog>? Blogs { get; set; }
 }

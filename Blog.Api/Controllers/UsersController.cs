@@ -1,5 +1,7 @@
 ﻿using Blog.Common.Models.User;
 using Blog.Services.Api;
+using Blog.Services.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers;
@@ -9,13 +11,16 @@ namespace Blog.Api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly UserService _userService;
+    private readonly UserHelper _userHelper;
 
-    public UsersController(UserService userService)
+    public UsersController(UserService userService, UserHelper userHelper)
     {
         _userService = userService;
+        _userHelper = userHelper;
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsers();

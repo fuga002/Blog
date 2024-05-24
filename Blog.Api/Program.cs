@@ -1,7 +1,5 @@
-using Blog.Data.Context;
-using Blog.Data.Repositories;
-using Blog.Services.Api;
-using Microsoft.EntityFrameworkCore;
+using Blog.Services.Extensions;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,32 +8,34 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<BlogDbContext>(options =>
+builder.Services.AddSwaggerGen(c =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("BlogDbContext"));
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Description = "JWT Bearer. : \"Authorization: Bearer { token } \"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
 });
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IBlogRepository, BlogRepository>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<BlogService>();
-builder.Services.AddScoped<PostService>();
-
-/*
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("MyCors", policy =>
-    {
-        policy.AllowAnyHeader();
-        policy.AllowAnyMethod();
-        policy.AllowAnyHeader();
-        policy.AllowCredentials();
-    });
-} );
-*/
+//Adding services
+builder.Services.AddServices(builder);
 
 var app = builder.Build();
 
@@ -54,6 +54,7 @@ app.UseCors(options =>
 });
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

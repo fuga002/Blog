@@ -1,5 +1,6 @@
 ﻿using Blog.Common.Models.Post;
 using Blog.Services.Api;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers;
@@ -30,7 +31,9 @@ public class PostsController : ControllerBase
         }
     }
 
+
     [HttpGet("/api/posts/{postId:int}")]
+    [Authorize]
     public async Task<IActionResult> GetPostById(int postId)
     {
         try

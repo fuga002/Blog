@@ -1,5 +1,6 @@
 ﻿using Blog.Common.Dtos;
 using Blog.Common.Models.User;
+using Blog.Common.Statics;
 using Blog.Data.Entities;
 using Blog.Data.Repositories;
 using Blog.Services.Extensions;
@@ -10,10 +11,12 @@ namespace Blog.Services.Api;
 public class UserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly JwtTokenService _jwtTokenService;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, JwtTokenService jwtTokenService)
     {
         _userRepository = userRepository;
+        _jwtTokenService = jwtTokenService;
     }
 
     public async Task<List<UserDto>> GetAllUsers()
@@ -36,7 +39,8 @@ public class UserService
         {
             Firstname = model.Firstname,
             Lastname = model.Lastname,
-            Username = model.Username
+            Username = model.Username,
+            Role = ConsStrings.UserRole
         };
 
         var passwordHash = new PasswordHasher<User>().HashPassword(user, model.Password);
@@ -45,7 +49,7 @@ public class UserService
         return user.ParseToModel();
     }
 
-    public async Task<UserDto> Login(LoginUserModel model)
+    public async Task<string> Login(LoginUserModel model)
     {
         var user = await _userRepository.GetByUsername(model.UserName);
         if (user == null) throw new Exception("Invalid Username");
@@ -53,7 +57,8 @@ public class UserService
         var result = new  PasswordHasher<User>().VerifyHashedPassword(user,user.PasswordHash,model.Password);
         if (result == PasswordVerificationResult.Failed)
             throw new Exception("Password failed");
-        return user.ParseToModel();
+        var token = _jwtTokenService.GenerateToken(user);
+        return token;
     }
 
     public async Task<UserDto> UpdateUser(Guid userId,UpdateUserModel model)
