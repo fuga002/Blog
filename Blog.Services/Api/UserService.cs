@@ -39,7 +39,7 @@ public class UserService
         {
             Firstname = model.Firstname,
             Lastname = model.Lastname,
-            Username = model.Username,
+            Username = model.Username.ToLower(),
             Role = ConsStrings.UserRole
         };
 
