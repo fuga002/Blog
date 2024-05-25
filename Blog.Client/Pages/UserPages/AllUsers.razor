@@ -1,0 +1,77 @@
+﻿@page "/allUsers"
+@using Blog.Common.Dtos
+@using Blog.Services.Client
+@inject UserIntegration UserIntegration
+<h3>You can see all users in there</h3>
+
+@if (_userDtos?.Count is not 0)
+{
+    <table>
+        <tr>
+            <th>#</th>
+            <th>User Id</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Username</th>
+            <th>Created at</th>
+            <th>First Blog name</th>
+            <th>Get User</th>
+        </tr>
+        @{
+            int count = 0;
+        }
+
+        @foreach (var user in _userDtos)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@user.Id</td>
+                <td>@user.Firstname</td>
+                <td>@user.Lastname</td>
+                <td>@user.Username</td>
+                <td>@user.CreatedAt.ToString("M/d/yy")</td>
+                @if (user.Blogs != null && user.Blogs?.Count != 0)
+                {
+                    foreach (var blog in user.Blogs)
+                    {
+                        <td>@blog.Name</td>
+                        break;
+                    }
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td><a class="btn btn-primary" href="/getUser/@user.Id">Get User</a></td>
+            </tr>
+        }
+    </table>
+}
+
+
+@code {
+    List<UserDto>? _userDtos = new();
+    protected override async Task OnInitializedAsync()
+    {
+        _userDtos = await UserIntegration.GetAllUsers();
+    }
+
+}
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>

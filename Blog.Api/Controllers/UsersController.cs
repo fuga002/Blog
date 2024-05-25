@@ -20,7 +20,6 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsers();
