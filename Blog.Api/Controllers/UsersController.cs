@@ -1,5 +1,6 @@
 ﻿using Blog.Common.Models.User;
 using Blog.Services.Api;
+using Microsoft.AspNetCore.Authorization;   
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers;
@@ -9,7 +10,7 @@ namespace Blog.Api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly UserService _userService;
-
+    private readonly HttpContextAccessor accessor;
     public UsersController(UserService userService)
     {
         _userService = userService;

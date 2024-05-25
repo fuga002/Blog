@@ -23,7 +23,7 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<PostService>();
-
+builder.Services.AddScoped<HttpContextAccessor>();
 /*
 builder.Services.AddCors(options =>
 {
