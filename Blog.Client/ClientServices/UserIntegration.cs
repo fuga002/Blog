@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Blog.Common.Dtos;
 
-namespace Blog.Services.Client;
+namespace Blog.Client.ClientServices;
 
 public class UserIntegration
 {
