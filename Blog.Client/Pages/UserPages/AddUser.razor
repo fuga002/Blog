@@ -3,7 +3,7 @@
 @using Blog.Common.Models.User
 @inject UserIntegration userIntegration
 
-<form>
+<EditForm Model="@userModel" OnValidSubmit="@Register">
     <div class="mb-3">
         <label for="firstname" class="form-label">First Name</label>
         <input id="firstname" type="text" class="form-control" @bind="userModel!.Firstname">
@@ -25,10 +25,11 @@
         <input if="confirmpassword" type="password" class="form-control" @bind="userModel!.ConfirmPassword">
     </div>
     <button type="submit" class="btn btn-primary" @onclick="Register">Register</button>
-</form>
+</EditForm>
 
 @code {
     CreateUserModel? userModel = new CreateUserModel();
+  
     async Task Register()
     {
         await userIntegration.AddUser(userModel);
