@@ -1,0 +1,37 @@
+﻿@page "/register"
+@using Blog.Client.ClientServices
+@using Blog.Common.Models.User
+@inject UserIntegration userIntegration
+
+<form>
+    <div class="mb-3">
+        <label for="firstname" class="form-label">First Name</label>
+        <input id="firstname" type="text" class="form-control" @bind="userModel!.Firstname">
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Last Name</label>
+        <input id="lastname" type="text" class="form-control" @bind="userModel!.Lastname">
+    </div>
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" type="text" class="form-control" @bind="userModel!.Username">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" type="password" class="form-control" @bind="userModel!.Password">
+    </div>
+    <div class="mb-3">
+        <label for="confirmpassword" class="form-label">Confirm Password</label>
+        <input if="confirmpassword" type="password" class="form-control" @bind="userModel!.ConfirmPassword">
+    </div>
+    <button type="submit" class="btn btn-primary" @onclick="Register">Submit</button>
+</form>
+
+@code {
+    CreateUserModel? userModel = new CreateUserModel();
+    async Task Register()
+    {
+        await userIntegration.AddUser(userModel);
+    }
+
+}
