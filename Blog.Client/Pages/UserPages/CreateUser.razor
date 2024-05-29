@@ -1,9 +1,4 @@
 ﻿@page "/createUser"
-@using Blog.Client.ClientServices
-@using Blog.Common.Models.User
-@using Blog.Common.Dtos
-@inject UserIntegration userIntegration
-@inject NavigationManager navigationManager
 <h3>CreateUser</h3>
 
  <EditForm Model="Model"  OnValidSubmit="Submit">
@@ -48,10 +43,10 @@
 
     private async Task Submit()
     {
-        var userCreate = await userIntegration.CreateUser(Model);
+        var userCreate = await UserIntegration.CreateUser(Model);
         if(userCreate is UserDto)
         {
-            navigationManager.NavigateTo("allUsers");
+            NavigationManager.NavigateTo("allUsers");
         }
         else
         {

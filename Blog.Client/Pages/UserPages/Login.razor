@@ -1,0 +1,50 @@
+﻿@page "/login"
+<h3>Login</h3>
+
+
+<div class="contanier">
+
+    <EditForm Model="LoginModel" OnValidSubmit="LoginClicked">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="card">
+        <div class="card-body">
+            <div class="form-control">
+                <label>Username</label>
+                <InputText @bind-Value="LoginModel.UserName"/>
+            </div>
+            <div class="form-control">
+                <label>Password</label>
+                <InputText @bind-Value="LoginModel.Password"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-control">
+        <button class="btn btn-primary" type="submit">Login</button>
+    </div>
+    </EditForm>
+</div>
+
+@if (IsShow)
+{
+    <h1>Token : @Token</h1>
+}
+
+@code
+{
+    public LoginUserModel LoginModel { get; set; } = new();
+    private bool IsShow = false;
+    private string Token;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsShow = false;
+    }
+
+    private async Task LoginClicked()
+    {
+        await UserIntegration.Login(LoginModel);
+
+        IsShow = true;
+    }
+}

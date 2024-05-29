@@ -1,10 +1,6 @@
 ﻿@page "/updateUser/{UserId:guid}"
-@using Blog.Client.ClientServices
 @using Blog.Common.Dtos
 @using Blog.Common.Models.User
-@using System.Net
-@inject UserIntegration UserIntegration
-@inject NavigationManager NavigationManager
 
 <EditForm Model="Model" OnSubmit="Update">
     <div class="form-group mb-3">

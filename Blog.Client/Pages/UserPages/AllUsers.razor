@@ -1,7 +1,4 @@
 ﻿@page "/allUsers"
-@using Blog.Common.Dtos
-@using Blog.Client.ClientServices
-@inject UserIntegration UserIntegration
 <h3>You can see all users in there</h3>
 
 @if (_userDtos?.Count is not 0)
@@ -17,6 +14,7 @@
             <th>First Blog name</th>
             <th>Get User</th>
             <th>Update User</th>
+            <th>Delete User</th>
         </tr>
         @{
             int count = 0;
@@ -46,6 +44,7 @@
                 }
                 <td><a class="btn btn-primary" href="/getUser/@user.Id">Get User</a></td>
                 <td><a class="btn btn-secondary" href="/updateUser/@user.Id">Update User</a></td>
+                <td><a class="btn btn-danger" href="/deleteUser/@user.Id">Delete User</a></td>
             </tr>
         }
     </table>
@@ -54,9 +53,12 @@
 
 @code {
     List<UserDto>? _userDtos = new();
+    private string token = null;
     protected override async Task OnInitializedAsync()
     {
         _userDtos = await UserIntegration.GetAllUsers();
+
+
     }
 
 }
