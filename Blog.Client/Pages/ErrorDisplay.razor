@@ -1,0 +1,10 @@
+﻿@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <textarea class="btn btn-danger" readonly="readonly">@ErrorMessage</textarea>
+}
+
+@code {
+
+    [Parameter]
+    public string ErrorMessage { get; set; }
+}

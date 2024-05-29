@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Blog.Common.Models.User;
+﻿namespace Blog.Common.Models.User;
 
 public class UpdateUserModel
 {
-    [Required]
-    public string Firstname { get; set; }
-    [Required]
-    public string Lastname { get; set; }
-    [Required]
-
-    public string Username { get; set; }
+    public string? Firstname { get; set; }
+    public string? Lastname { get; set; }
+    public string? Username { get; set; }
 }

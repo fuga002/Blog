@@ -16,6 +16,7 @@
             <th>Created at</th>
             <th>First Blog name</th>
             <th>Get User</th>
+            <th>Update User</th>
         </tr>
         @{
             int count = 0;
@@ -44,6 +45,7 @@
                     <td></td>
                 }
                 <td><a class="btn btn-primary" href="/getUser/@user.Id">Get User</a></td>
+                <td><a class="btn btn-secondary" href="/updateUser/@user.Id">Update User</a></td>
             </tr>
         }
     </table>

@@ -1,0 +1,59 @@
+﻿@page "/updateUser/{UserId:guid}"
+@using Blog.Client.ClientServices
+@using Blog.Common.Dtos
+@using Blog.Common.Models.User
+@using System.Net
+@inject UserIntegration UserIntegration
+@inject NavigationManager NavigationManager
+
+<EditForm Model="Model" OnSubmit="Update">
+    <div class="form-group mb-3">
+        <label>Firstname</label>
+        <input @bind="Model.Firstname">First Name</input>
+    </div>
+    <div class="form-group mb-3">
+        <label>Lastname</label>
+        <input @bind="Model.Lastname">Last Name</input>
+    </div>
+    <div class="form-group mb-3">
+        <label>Username</label>
+        <input @bind="Model.Username">Username</input>
+    </div>
+    <div class="form-group mb-3">
+        <button class="btn btn-secondary" type="submit">Update</button>
+    </div>
+</EditForm>
+
+@if (IsErrorMessageExist)
+{
+    <ErrorDisplay ErrorMessage="@ErrorMessage"></ErrorDisplay>
+}
+
+@code {
+
+    [Parameter]
+    public Guid UserId { get; set; }
+
+    public UpdateUserModel Model { get; set; } = new();
+    public bool IsErrorMessageExist = false;
+    public string ErrorMessage { get; set; }
+
+    public async Task Update()
+    {
+        (UserDto?, string) response = await UserIntegration.UpdateUserModel(userId: UserId, Model);
+
+        if (response.Item1 is not null)
+        {
+            NavigationManager.NavigateTo("allUsers");
+        }
+        else
+        {
+            ErrorMessage = response.Item2;
+            IsErrorMessageExist = true;
+
+            
+        }
+    }
+}
+
+
