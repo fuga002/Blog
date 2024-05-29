@@ -1,0 +1,29 @@
+﻿@page "/postmyblog"
+@using Blog.Common.Models.Blog
+<EditForm Model="model" OnValidSubmit="Create">
+    <DataAnnotationsValidator />    
+    <ValidationSummary />
+    <div class="form-group">
+        <label>
+            Name:
+            <InputText @bind-Value="@model.Name" class="form-control"></InputText>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Description:
+            <InputText @bind-Value="@model.Description" class="form-control"></InputText>
+        </label>
+    </div>
+    <button type="submit" class="btn btn-dark">Create</button>
+</EditForm>
+
+@code {
+    [Parameter]
+   public Guid userId { get; set; }
+    CreateBlogModel model = new CreateBlogModel();
+    async Task Create()
+    {
+       await BlogIntegration.CreateMyBlog(userId,model);
+    }
+}
