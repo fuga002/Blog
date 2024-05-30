@@ -14,4 +14,7 @@ public class BlogIntegration
 
     public async Task<List<BlogDto>?> GetNotRelatedAllBlogs(Guid userId) =>
         await _httpClient.GetFromJsonAsync<List<BlogDto>>($"api/users/{userId}/Blogs/not-related-blogs");
+
+    public async Task<List<BlogDto>?> GetNotRelatedIdBlog(Guid userId, int blogId) =>
+        await _httpClient.GetFromJsonAsync<List<BlogDto>>($"api/users/{userId}Blogs/not-related-blogs/{blogId}");
 }
