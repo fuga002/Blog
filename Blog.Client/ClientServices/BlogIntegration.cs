@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 using Blog.Common.Dtos;
 using Blog.Common.Models.Blog;
@@ -16,15 +17,15 @@ public class BlogIntegration
 
     public async Task<List<BlogDto>?> GetNotRelatedAllBlogs(Guid userId) =>
         await _httpClient.GetFromJsonAsync<List<BlogDto>>($"api/users/{userId}/Blogs/not-related-blogs");
-    public async Task<object> CreateMyBlog(Guid userId, CreateBlogModel? createBlog)
+    public async Task<Tuple<BlogDto?, HttpStatusCode>> CreateMyBlog(Guid userId, CreateBlogModel? createBlog)
     {
 
         var response = await _httpClient.PostAsJsonAsync($"api/users/{userId}/blogs", createBlog);
         if(response.IsSuccessStatusCode)
         {
             var blogDto = JsonSerializer.Deserialize<BlogDto?>(await  response.Content.ReadAsStringAsync());
-            return blogDto;
+            return Tuple.Create(blogDto, response.StatusCode);
         }
-        return response.StatusCode;
+        return null;
     }
 }
