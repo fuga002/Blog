@@ -1,0 +1,26 @@
+﻿@page "/myBlogs/{UserId:guid}"
+@using Blog.Client.Pages.Components
+@if (_check)
+{
+    @if (_blogDtos is null || _blogDtos.Count == 0)
+    {
+        <h3>You don't have any blogss</h3>
+    }
+    else
+    {
+        <BlogTableComponent Models="_blogDtos" ></BlogTableComponent>
+    }
+}
+
+@code {
+
+    [Parameter] public Guid UserId { get; set; }
+    private List<BlogDto>? _blogDtos { get; set; }
+    private string? _errorMessage { get; set; }
+    private bool _check { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        (_blogDtos, _errorMessage, _check) = await BlogIntegration.GetMyBlogs(UserId);
+    }
+
+}

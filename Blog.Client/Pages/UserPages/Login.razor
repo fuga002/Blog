@@ -25,26 +25,15 @@
     </EditForm>
 </div>
 
-@if (IsShow)
-{
-    <h1>Token : @Token</h1>
-}
+
 
 @code
 {
     public LoginUserModel LoginModel { get; set; } = new();
-    private bool IsShow = false;
-    private string Token;
 
-    protected override async Task OnInitializedAsync()
-    {
-        IsShow = false;
-    }
 
     private async Task LoginClicked()
     {
         await UserIntegration.Login(LoginModel);
-
-        IsShow = true;
     }
 }

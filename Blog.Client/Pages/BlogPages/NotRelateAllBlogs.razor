@@ -1,32 +1,13 @@
 ﻿@page "/notRelatedAllBlogs/{UserId:guid}"
-<h3>You can see all users in there</h3>
-
+@using Blog.Client.Pages.Components
 @if (_blogDtos?.Count is not 0)
 {
-    <table>
-        <tr>
-            <th>#</th>
-            <th>Blog Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Created at</th>
-        </tr>
-        @{
-            int count = 0;
-        }
+    <BlogTableComponent Models="_blogDtos"></BlogTableComponent>
+}
 
-        @foreach (var model in _blogDtos)
-        {
-            count++;
-            <tr>
-                <td>@count</td>
-                <td>@model.Id</td>
-                <td>@model.Name</td>
-                <td>@model.Description</td>
-                <td>@model.CreatedDate.ToString("M/d/yy")</td>
-            </tr>
-        }
-    </table>
+@if (IsShow)
+{
+    <GetNotRelatedBlogById UserId="UserId" BlogId="_blogId"></GetNotRelatedBlogById>
 }
 
 
@@ -34,26 +15,23 @@
     [Parameter]
     public Guid UserId { get; set; }
     List<BlogDto>? _blogDtos = new();
+    private int _blogId;
+
+    private bool IsShow = false;
     protected override async Task OnInitializedAsync()
     {
         _blogDtos = await BlogIntegration.GetNotRelatedAllBlogs(userId: UserId);
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        IsShow = false;
+    }
+
+    private void GetBlog(BlogDto blog)
+    {
+        IsShow = false;
+        _blogId = blog.Id;
+        IsShow = true;
+    }
 }
-<style>
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-</style>
