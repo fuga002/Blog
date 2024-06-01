@@ -13,7 +13,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<UserIntegration>();
 builder.Services.AddScoped<BlogIntegration>();
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7105/") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7105/") });
 
 /*builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7105/") });*/
 builder.Services.AddHttpClient("ServerApi", client => client.BaseAddress = new Uri("https://localhost:7105/"))
@@ -22,6 +22,7 @@ builder.Services.AddHttpClient("ServerApi", client => client.BaseAddress = new U
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ServerApi"));
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthService>();
 

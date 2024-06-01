@@ -23,7 +23,7 @@ public class AuthService
 
     public async Task<bool> Login(LoginUserModel model)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/users", model);
+        var response = await _httpClient.PostAsJsonAsync("api/users/login", model);
 
         if (response.IsSuccessStatusCode)
         {
