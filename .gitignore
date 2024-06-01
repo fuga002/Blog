@@ -262,7 +262,6 @@ ServiceFabricBackup/
 *.rptproj.bak
 
 *.xml
-*git rm --cached appsettings.json
 
 # SQL Server files
 *.mdf
