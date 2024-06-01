@@ -1,0 +1,51 @@
+﻿<table>
+    <tr>
+        <th>#</th>
+        <th>Blog Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Created at</th>
+        <th>Get Blog</th>
+    </tr>
+    @{
+        int count = 0;
+    }
+
+    @foreach (var model in Models)
+    {
+        count++;
+        <tr>
+            <td>@count</td>
+            <td>@model.Id</td>
+            <td>@model.Name</td>
+            <td>@model.Description</td>
+            <td>@model.CreatedDate.ToString("M/d/yy")</td>
+            <td><a href="#" class="btn btn-success" >Get Blog</a></td>
+        </tr>
+    }
+</table>
+
+@code {
+
+    [Parameter] public List<BlogDto> Models { get; set; }
+
+}
+
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>

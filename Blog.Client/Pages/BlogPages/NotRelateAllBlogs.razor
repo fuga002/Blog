@@ -1,0 +1,37 @@
+﻿@page "/notRelatedAllBlogs/{UserId:guid}"
+@using Blog.Client.Pages.Components
+@if (_blogDtos?.Count is not 0)
+{
+    <BlogTableComponent Models="_blogDtos"></BlogTableComponent>
+}
+
+@if (IsShow)
+{
+    <GetNotRelatedBlogById UserId="UserId" BlogId="_blogId"></GetNotRelatedBlogById>
+}
+
+
+@code {
+    [Parameter]
+    public Guid UserId { get; set; }
+    List<BlogDto>? _blogDtos = new();
+    private int _blogId;
+
+    private bool IsShow = false;
+    protected override async Task OnInitializedAsync()
+    {
+        _blogDtos = await BlogIntegration.GetNotRelatedAllBlogs(userId: UserId);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        IsShow = false;
+    }
+
+    private void GetBlog(BlogDto blog)
+    {
+        IsShow = false;
+        _blogId = blog.Id;
+        IsShow = true;
+    }
+}

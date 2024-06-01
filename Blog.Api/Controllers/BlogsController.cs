@@ -9,7 +9,6 @@ namespace Blog.Api.Controllers;
 public class BlogsController : ControllerBase
 {
     private readonly BlogService _blogService;
-
     public BlogsController(BlogService blogService)
     {
         _blogService = blogService;

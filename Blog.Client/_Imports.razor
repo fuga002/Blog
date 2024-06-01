@@ -8,3 +8,17 @@
 @using Microsoft.JSInterop
 @using Blog.Client
 @using Blog.Client.Shared
+
+
+@using Blazored.LocalStorage
+@using Blog.Client.ClientServices
+@inject ILocalStorageService StorageService
+
+@inject UserIntegration UserIntegration
+@inject BlogIntegration BlogIntegration
+
+@inject NavigationManager NavigationManager
+
+
+@using Blog.Common.Dtos
+@using Blog.Common.Models.User

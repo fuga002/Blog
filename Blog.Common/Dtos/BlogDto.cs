@@ -7,6 +7,7 @@ public class BlogDto
     public string Description { get; set; }
 
     public Guid UserId { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public List<PostDto>? Posts { get; set; }
 }

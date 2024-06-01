@@ -64,17 +64,29 @@ public class UserService
     public async Task<UserDto> UpdateUser(Guid userId,UpdateUserModel model)
     {
         var user = await _userRepository.GetById(userId);
-        if(!string.IsNullOrWhiteSpace(model.Firstname))
+        var check = false;
+        if (!string.IsNullOrWhiteSpace(model.Firstname))
+        {
             user.Firstname = model.Firstname;
-        if(!string.IsNullOrWhiteSpace(model.Lastname))
+            check = true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.Lastname))
+        {
             user.Lastname = model.Lastname;
+            check = true;
+        }
         if (!string.IsNullOrWhiteSpace(model.Username))
         {
             await IsExist(model.Username);
             user.Username = model.Username;
+            check = true;
         }
 
-        await _userRepository.Update(user);
+        if (check)
+        {
+            await _userRepository.Update(user);
+        }
         return user.ParseToModel();
     }
 

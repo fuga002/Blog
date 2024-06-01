@@ -1,6 +1,4 @@
 ﻿@page "/getUser/{UserId:guid}"
-@inject HttpClient Client
-@using Blog.Common.Dtos
 @if (_user is not null)
 {
     <div class="card">
@@ -11,6 +9,9 @@
             <p>Created at : @_user.CreatedAt.ToString("M/d/yy")</p> 
         </div>
     </div>
+
+
+    <a class="btn btn-primary" href="notRelatedAllBlogs/@UserId">See All blogs</a>
 }
 @code {
     [Parameter]
@@ -19,8 +20,9 @@
     UserDto? _user = new();
     protected override async Task OnInitializedAsync()
     {
-        _user = await Client.GetFromJsonAsync<UserDto>($"api/Users/{UserId}");
+        _user = await UserIntegration.GetUserById(userId: UserId);
     }
+
 
 }
 

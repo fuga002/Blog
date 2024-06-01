@@ -1,0 +1,43 @@
+﻿@page "/deleteUser/{UserId:guid}"
+
+    <div class="form-group mb-3">
+        <label>UserId</label>
+        <input value="@_user!.Id"  disabled/>
+    </div>
+    <div class="form-group mb-3">
+        <label>Firstname</label>
+    <input value="@_user.Firstname" disabled />
+    </div>
+    <div class="form-group mb-3">
+        <label>Lastname</label>
+    <input value="@_user.Lastname" disabled />
+    </div>
+    <div class="form-group mb-3">
+        <label>Username</label>
+    <input @bind="_user.Username" readonly />
+    </div>
+    <div class="form-group mb-3">
+        <label>Created at</label>
+        <input value="@_user.CreatedAt.ToString("D")" readonly />
+    </div>
+<div class="form-group mb-3">
+    <button class="btn btn-danger" @onclick="DeleteClicked" type="submit">Delete</button>
+</div>
+
+
+
+@code
+{
+    [Parameter]
+    public Guid UserId { get; set; }
+    private UserDto? _user { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserIntegration.GetUserById(UserId);
+    }
+
+    private async Task DeleteClicked()
+    {
+        await UserIntegration.DeleteUser(UserId);
+    }
+}

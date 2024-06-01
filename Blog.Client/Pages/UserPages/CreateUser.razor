@@ -1,0 +1,56 @@
+﻿@page "/createUser"
+<h3>CreateUser</h3>
+
+ <EditForm Model="Model"  OnValidSubmit="Submit">
+     <DataAnnotationsValidator/>
+    <ValidationSummary />
+     <div class="form-group">
+        <label>
+            Firstname:
+            <InputText @bind-Value="@Model.Firstname" class="form-control"></InputText>
+        </label>
+        </div>
+        <div class="form-group">
+        <label>
+            Lastname:
+            <InputText @bind-Value="@Model.Lastname" class="form-control"></InputText>
+        </label>
+        </div>
+        <div class="form-group">
+        <label>
+            UserName:
+            <InputText @bind-Value="@Model.Username" class="form-control"></InputText>
+        </label>
+        </div>
+    <div class="form-group">
+        <label>
+            Password:
+            <InputText type="password" placeholder="Password" @bind-Value="@Model.Password" class="form-control"></InputText>
+        </label>
+        </div>
+    <div class="form-group">
+        <label>
+            Confirm Password :
+            <InputText type="password" placeholder="Password Confirmation" @bind-Value="@Model.ConfirmPassword" class="form-control"></InputText>
+        </label>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-dark">Submit</button>
+ </EditForm>
+@code {
+    public CreateUserModel? Model { get; set; } = new CreateUserModel();
+
+
+    private async Task Submit()
+    {
+        var userCreate = await UserIntegration.CreateUser(Model);
+        if(userCreate is UserDto)
+        {
+            NavigationManager.NavigateTo("allUsers");
+        }
+        else
+        {
+            return;
+        }
+    }
+}

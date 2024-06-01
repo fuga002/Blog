@@ -20,6 +20,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsers();
@@ -27,6 +28,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{userId:guid}")]
+    [Authorize]
     public async Task<IActionResult> GetUserById(Guid userId)
     {
         try
@@ -69,6 +71,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{userId:guid}")]
+    [Authorize]
     public async Task<IActionResult> UpdateUser(Guid userId,[FromBody]UpdateUserModel model)
     {
         try
@@ -83,6 +86,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{userId:guid}")]
+    [Authorize]
     public async Task<IActionResult> DeleteUser(Guid userId)
     {
         try
