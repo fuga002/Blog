@@ -1,6 +1,35 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            @Body
+        </Authorized>
+        <NotAuthorized>
+            @if (!isRedirecting)
+            {
+                <p>Redirecting</p>
+                NavigationManager.NavigateTo("/login");
+            }
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
-<div class="page">
+@code
+{
+    private bool isRedirecting = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+    }
+}
+
+@*<div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
@@ -14,4 +43,4 @@
             @Body
         </article>
     </main>
-</div>
+</div>*@
