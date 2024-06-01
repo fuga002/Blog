@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Blazored.LocalStorage;
@@ -63,6 +64,19 @@ public class BlogIntegration
         return new(null, errorMessage, false);
     }
 
+
+    public async Task<Tuple<BlogDto, string?, bool>>? UpdateMyBlog(Guid userId, int blogId, UpdateBlogModel model)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"api/users/{userId}/blogs/{blogId}", model);
+        if (response.IsSuccessStatusCode)
+        {
+            var blogDto = await response.Content.ReadFromJsonAsync<BlogDto>();
+            return new(blogDto!, string.Empty, true);
+        }
+		var errorMessage = await response.Content.ReadAsStringAsync();
+		return new(null, errorMessage, false);
+
+	}
 
     private async Task<string?> GetToken()
     {

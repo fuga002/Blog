@@ -1,0 +1,31 @@
+﻿@page "/editmyblog"
+@using Blog.Common.Models.Blog
+<h3>EditMyBlog</h3>
+<EditForm Model="model" OnValidSubmit="UpdateBlog">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>
+            Name:
+            <InputText @bind-Value="@model.Name" class="form-control"></InputText>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Description:
+            <InputText @bind-Value="@model.Description" class="form-control"></InputText>
+        </label>
+    </div>
+    <button type="submit" class="btn btn-dark">Update</button>
+</EditForm>
+@code {
+    [Parameter]
+    public int BlogId { get; set; }
+    [Parameter]
+    public Guid UserId { get; set; }
+    UpdateBlogModel? model { get; set; } = new UpdateBlogModel();
+    async Task UpdateBlog()
+	{
+		await BlogIntegration.UpdateMyBlog(UserId, BlogId, model)!;
+	}
+}
