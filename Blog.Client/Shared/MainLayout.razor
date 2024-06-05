@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -7,7 +6,14 @@
 
     <main>
         <div class="top-row px-4">
-            <a class="btn btn-primary" href="/login" target="_blank">Login</a>
+            @if (_checkUserLoginIn!.Value)
+            {
+                <a class="btn btn-danger" @onclick="Logout" target="_blank">Logout</a>
+            }
+            else
+            {
+                <a class="btn btn-primary" href="/login" target="_blank">Login</a>
+            }
         </div>
 
         <article class="content px-4">
@@ -15,3 +21,27 @@
         </article>
     </main>
 </div>
+
+
+@code
+{
+    private bool? _checkUserLoginIn { get; set; } = false;
+    CustomAuthStateProvider? _authState;
+    protected override async Task OnInitializedAsync()
+    {
+         _authState = (CustomAuthStateProvider)AuthenticationState;
+
+        var state = await _authState.GetAuthenticationStateAsync();
+
+         _checkUserLoginIn = state.User.Identity?.IsAuthenticated;
+
+        
+    }
+
+    private async Task Logout()
+    {
+        await StorageService.RemoveTokenAsync();
+       await _authState?.UpdateState()!;
+       _checkUserLoginIn = false;
+    }
+}

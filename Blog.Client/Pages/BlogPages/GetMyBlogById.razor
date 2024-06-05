@@ -1,0 +1,39 @@
+﻿@page "/getMyBlogById/{BlogId:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@if (_check)
+{
+    <div class="card">
+        <div class="card-header">
+            @_blogDto.Name
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Author : @(_userDto.Firstname + " " + _userDto.Lastname)</h5>
+            <p class="card-text">@_blogDto.Description</p>
+            <a href="#" class="btn btn-primary">See Posts</a>
+        </div>
+    </div>
+}
+else
+{
+    <ErrorDisplay ErrorMessage="@_errorMessage"></ErrorDisplay>
+}
+
+@code {
+    [Parameter] public int BlogId { get; set; }
+    private Guid UserId { get; set; }
+    private BlogDto? _blogDto;
+    private string? _errorMessage;
+    private bool _check;
+    private UserDto? _userDto;
+    protected override async Task OnInitializedAsync()
+    {
+        UserId = await UserSettings.GetUserId();
+
+        _userDto = await UserIntegration.GetUserById(UserId);
+
+        (_blogDto, _errorMessage, _check) = await BlogIntegration.GetMyBlogById(userId: UserId, BlogId);
+
+    }
+
+}

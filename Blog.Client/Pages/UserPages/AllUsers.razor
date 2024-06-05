@@ -1,67 +1,79 @@
 ﻿@page "/allUsers"
-<h3>You can see all users in there</h3>
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
 
-@if (_userDtos?.Count is not 0)
-{
-    <table>
-        <tr>
-            <th>#</th>
-            <th>User Id</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Username</th>
-            <th>Created at</th>
-            <th>First Blog name</th>
-            <th>Get User</th>
-            <th>Update User</th>
-            <th>Delete User</th>
-            <th> The User Blogs</th>
-        </tr>
-        @{
-            int count = 0;
-        }
-
-        @foreach (var user in _userDtos)
+<AuthorizeView>
+    <Authorized>
+        <h3>You can see all users in there</h3>
+        @if (_userDtos?.Count is not 0)
         {
-            count++;
-            <tr>
-                <td>@count</td>
-                <td>@user.Id</td>
-                <td>@user.Firstname</td>
-                <td>@user.Lastname</td>
-                <td>@user.Username</td>
-                <td>@user.CreatedAt.ToString("M/d/yy")</td>
-                @if (user.Blogs != null && user.Blogs?.Count != 0)
-                {
-                    foreach (var blog in user.Blogs)
-                    {
-                        <td>@blog.Name</td>
-                        break;
-                    }
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>User Id</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Username</th>
+                    <th>Created at</th>
+                    <th>First Blog name</th>
+                    <th>Get User</th>
+                    <th>Update User</th>
+                    <th>Delete User</th>@*
+                    <th> The User Blogs</th>*@
+                </tr>
+                @{
+                    int count = 0;
                 }
-                else
+
+                @foreach (var user in _userDtos)
                 {
-                    <td></td>
+                    count++;
+                    <tr>
+                        <td>@count</td>
+                        <td>@user.Id</td>
+                        <td>@user.Firstname</td>
+                        <td>@user.Lastname</td>
+                        <td>@user.Username</td>
+                        <td>@user.CreatedAt.ToString("M/d/yy")</td>
+                        @if (user.Blogs != null && user.Blogs?.Count != 0)
+                        {
+                            foreach (var blog in user.Blogs)
+                            {
+                                <td>@blog.Name</td>
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        <td><a class="btn btn-primary" href="/getUser/@user.Id">Get User</a></td>
+                        <td><a class="btn btn-secondary" href="/updateUser/@user.Id">Update User</a></td>
+                        <td><a class="btn btn-danger" href="/deleteUser/@user.Id">Delete User</a></td>
+                        @*<td><a href="/myBlogs/{@user.Id}" class="btn btn-success">My Blogs</a></td>*@
+                    </tr>
                 }
-                <td><a class="btn btn-primary" href="/getUser/@user.Id">Get User</a></td>
-                <td><a class="btn btn-secondary" href="/updateUser/@user.Id">Update User</a></td>
-                <td><a class="btn btn-danger" href="/deleteUser/@user.Id">Delete User</a></td>
-                <td><a href="/myBlogs/{@user.Id}" class="btn btn-success">My Blogs</a></td>
-            </tr>
+            </table>
         }
-    </table>
-}
 
 
-@code {
-    List<UserDto>? _userDtos = new();
-    private string token = null;
-    protected override async Task OnInitializedAsync()
-    {
-        _userDtos = await UserIntegration.GetAllUsers();
-    }
+        @code {
+            List<UserDto>? _userDtos = new();
+            private string token = null;
 
-}
+            protected override async Task OnInitializedAsync()
+            {
+                _userDtos = await UserIntegration.GetAllUsers();
+            }
+
+        }
+
+    </Authorized>
+</AuthorizeView>
+
+
+
 <style>
     table {
         font-family: arial, sans-serif;

@@ -25,15 +25,31 @@
     </EditForm>
 </div>
 
-
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <ErrorDisplay ErrorMessage="@errorMessage"></ErrorDisplay>
+}
 
 @code
 {
     public LoginUserModel LoginModel { get; set; } = new();
 
+    private string? errorMessage;
+    string? token;
+    bool check;
 
     private async Task LoginClicked()
     {
-        await UserIntegration.Login(LoginModel);
+        (token,errorMessage,check) = await UserIntegration.Login(LoginModel);
+
+       if (check)
+       {
+           var state = (CustomAuthStateProvider)AuthenticationState;
+
+           state?.GetAuthenticationStateAsync();
+           state.UpdateState();
+
+           NavigationManager.NavigateTo("/",forceLoad:true);
+       }
     }
 }

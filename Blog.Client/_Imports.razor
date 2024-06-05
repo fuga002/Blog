@@ -12,13 +12,18 @@
 
 @using Blazored.LocalStorage
 @using Blog.Client.ClientServices
-@inject ILocalStorageService StorageService
+@using Blog.Client.ClientServices.Helpers
+
+@inject UserSettings UserSettings
 
 @inject UserIntegration UserIntegration
 @inject BlogIntegration BlogIntegration
 
 @inject NavigationManager NavigationManager
+@inject StorageService StorageService
 
+@inject AuthenticationStateProvider AuthenticationState
 
 @using Blog.Common.Dtos
 @using Blog.Common.Models.User
+@using Microsoft.AspNetCore.Components.Authorization

@@ -63,21 +63,17 @@ public class BlogIntegration
         return new(null, errorMessage, false);
     }
 
+    public async Task<Tuple<BlogDto?, string?, bool>> GetMyBlogById(Guid userId, int blogId)
+    {
+        var response = await _httpClient.GetAsync($"api/users/{userId}/blogs/{blogId}");
+        if (response.IsSuccessStatusCode)
+        {
+            var blogDto = await response.Content.ReadFromJsonAsync<BlogDto>();
+            return new(blogDto, string.Empty, true);
+        }
 
-    private async Task<string?> GetToken()
-    {
-        return await _localStorageService.GetItemAsync<string>("jwt-token");
-    }
-    private async Task CheckTokenExist()
-    {
-        var token = await GetToken();
-        if (!string.IsNullOrEmpty(token))
-        {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-        else
-        {
-            _navigationManager.NavigateTo("/login");
-        }
+        var errorMessage = await response.Content.ReadAsStringAsync();
+        return new(null, errorMessage, false);
     }
 }
+

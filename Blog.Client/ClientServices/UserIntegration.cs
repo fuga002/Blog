@@ -2,10 +2,9 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Blazored.LocalStorage;
+using Blog.Client.ClientServices.Helpers;
 using Blog.Common.Dtos;
 using Blog.Common.Models.User;
-using Blog.Data.Entities;
 using Microsoft.AspNetCore.Components;
 
 namespace Blog.Client.ClientServices;
@@ -13,13 +12,13 @@ namespace Blog.Client.ClientServices;
 public class UserIntegration
 {
     private readonly HttpClient _httpClient;
-    private readonly ILocalStorageService _storageService;
+    private readonly StorageService _storageService;
     private readonly NavigationManager _navigationManager;
-    public UserIntegration(HttpClient httpClient, ILocalStorageService storageService, NavigationManager navigationManager)
+    public UserIntegration(HttpClient httpClient, NavigationManager navigationManager, StorageService storageService)
     {
         _httpClient = httpClient;
-        _storageService = storageService;
         _navigationManager = navigationManager;
+        _storageService = storageService;
     }
 
     public async Task<List<UserDto>?> GetAllUsers()
@@ -49,19 +48,21 @@ public class UserIntegration
     }
 
 
-    public async Task Login(LoginUserModel model)
+    public async Task<Tuple<string?,string?,bool>> Login(LoginUserModel model)
     {
         var response = await _httpClient.PostAsJsonAsync("api/Users/login", model);
         var token = "";
 
         if (response.IsSuccessStatusCode)
         {
-
             token = await response.Content.ReadAsStringAsync();
+            await _storageService.SetTokenAsync(token);
+            return new(token, string.Empty, true);
         }
-        await _storageService.SetItemAsync("jwt-token", token);
 
-        _navigationManager.NavigateTo("allUsers");
+        var errorMessage = await response.Content.ReadAsStringAsync();
+
+        return new(string.Empty, errorMessage, false);
     }
 
     public async Task<(UserDto? userDto, string errorMessage)> UpdateUserModel(Guid userId, UpdateUserModel model)
@@ -95,7 +96,7 @@ public class UserIntegration
 
     private async Task<string?> GetToken()
     {
-        return await _storageService.GetItemAsync<string>("jwt-token");
+        return await _storageService.GetTokenAsync();
     }
 
     private async Task CheckTokenExist()

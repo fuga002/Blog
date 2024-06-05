@@ -44,8 +44,8 @@ public static class ServiceExtension
                 ValidateAudience = true,
                 IssuerSigningKey = new SymmetricSecurityKey(signinKey),
                 ValidateIssuerSigningKey = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
+                ValidateLifetime = false,
+                //ClockSkew = TimeSpan.Zero
             };
         });
     }
