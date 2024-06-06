@@ -1,0 +1,30 @@
+﻿@page "/getmyallposts/{BlogId:int}/posts"   
+<h3>GetMyAllPosts</h3>
+@if(check)
+{
+    foreach(var item in Posts)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <p class="card-text">@item.Content</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public int BlogId { get; set; }
+    public Guid UserId { get; set; }
+    public List<PostDto?> Posts{ get; set; }
+    public string? ErrorMessage;
+    public bool check;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var (Posts, ErrorMessage, check) = await PostIntegration.GetMyAllPosts(UserId, BlogId);      
+    }
+}

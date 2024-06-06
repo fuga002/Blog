@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using Blog.Common.Dtos;
 
 namespace Blog.Client.ClientServices;
@@ -26,5 +27,20 @@ public class PostIntegration
 
         var errorMessage = await response.Content.ReadAsStringAsync();
         return new(null, errorMessage, false);
+    }
+
+    public async Task<Tuple<List<PostDto>, string, bool>> GetMyAllPosts(Guid userId,int blogId)
+    {
+        
+        var response = await _httpClient.GetAsync($"api/users/{userId}/blogs{blogId}/posts");
+        if(response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadFromJsonAsync<List<PostDto>>();
+            return new(content, string.Empty, true);
+        }
+
+        var errormessage = response.Content.ReadAsStringAsync();
+        return new(null, errormessage.ToString()!, false);
+        
     }
 }
