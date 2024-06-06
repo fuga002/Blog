@@ -20,6 +20,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<UserIntegration>();
 builder.Services.AddScoped<BlogIntegration>();
+builder.Services.AddScoped<PostIntegration>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7105/") });
 
 

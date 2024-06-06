@@ -33,7 +33,6 @@ public class PostsController : ControllerBase
 
 
     [HttpGet("/api/posts/{postId:int}")]
-    [Authorize]
     public async Task<IActionResult> GetPostById(int postId)
     {
         try

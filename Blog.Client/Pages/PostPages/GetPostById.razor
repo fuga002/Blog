@@ -1,0 +1,40 @@
+﻿@page "/get-post-by-id/{PostId:int}"
+
+
+@if (_post != null)
+{
+    <div class="w3-container w3-red">
+        <h1>@_post.Title</h1>
+    </div>
+
+    //<img src="img_car.jpg" alt="Car" style="width:100%">
+
+    <div class="w3-container">
+        <p>@_post.Content</p>
+    </div>
+
+    <div class="w3-container w3-red">
+        <h5>@_post.AuthorFullName</h5>
+    </div>
+
+}
+else
+{
+    <ErrorDisplay ErrorMessage="@errorMessage"></ErrorDisplay>
+}
+
+
+@code {
+
+    [Parameter] public int PostId { get; set; }
+
+    PostDto? _post;
+    private string? errorMessage;
+    private bool check;
+
+    protected override async Task OnInitializedAsync()
+    {
+        (_post,errorMessage,check) = await PostIntegration.GetPostById(PostId);
+    }
+
+}
