@@ -1,40 +1,33 @@
+@page "/get-not-related-blog-by-id/{BlogId:int}"
 
-@if (check)
+@if (_check)
 {
-    <div class="card">
-        <div class="card-header">
-            @_blogDto.Name    
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Author : @(_userDto.Firstname +" " + _userDto.Lastname)</h5>
-            <p class="card-text">@_blogDto.Description</p>
-            <a href="#" class="btn btn-primary">See Posts</a>
-        </div>
-    </div>
+    <BlogDetailTableComponent Blog="@_blogDto" AuthorName="@AuthorName"></BlogDetailTableComponent>
 }
 else
 {
-    <ErrorDisplay ErrorMessage="@errorMessage"></ErrorDisplay>
+    <ErrorDisplay ErrorMessage="@_errorMessage"></ErrorDisplay>
 }
 
 
 @code {
     [Parameter]
     public int BlogId { get; set; }
-    [Parameter]
-    public Guid UserId { get; set; }
     
     private BlogDto? _blogDto = new();
-    string? errorMessage;
-    bool check;
-    UserDto _userDto;
+    private Guid UserId { get; set; }
+    string? _errorMessage;
+    bool _check;
+    private string? AuthorName { get; set; }
+    private UserDto Author { get; set; }
     protected  override async Task OnInitializedAsync()
     {
-         (_blogDto, errorMessage,  check) = await BlogIntegration.GetNotRelatedBlogById(UserId,BlogId);
-         if (check)
-         {
-             _userDto = await UserIntegration.GetUserById(_blogDto.UserId);
-         }
+        UserId = await UserSettings.GetUserId();
+         (_blogDto, _errorMessage,  _check) = await BlogIntegration.GetNotRelatedBlogById(UserId,BlogId);
+
+
+         Author = await UserIntegration.GetUserById(_blogDto.UserId);
+         AuthorName = $"{Author.Firstname} {Author.Lastname}";
     }
 
 }

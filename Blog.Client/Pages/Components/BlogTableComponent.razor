@@ -1,51 +1,71 @@
-﻿<table>
-    <tr>
-        <th>#</th>
-        <th>Blog Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Created at</th>
-        <th>Get Blog</th>
-    </tr>
-    @{
-        int count = 0;
-    }
-
-    @foreach (var model in Models)
-    {
-        count++;
-        <tr>
-            <td>@count</td>
-            <td>@model.Id</td>
-            <td>@model.Name</td>
-            <td>@model.Description</td>
-            <td>@model.CreatedDate.ToString("M/d/yy")</td>
-            <td><a href="/getMyBlogById/@model.Id" class="btn btn-success">Get Blog</a></td>
-        </tr>
-    }
-</table>
-
-@code {
-
-    [Parameter] public List<BlogDto> Models { get; set; }
-
+﻿@foreach (var blog in Blogs)
+{
+    <div class="col-md-3 mb-2">
+        <a href="@GetHref(blog.Id)">
+            <div class="card">
+                <img class="img-thumbnail" src="https://img.freepik.com/free-photo/online-message-blog-chat-communication-envelop-graphic-icon-concept_53876-139717.jpg" @*src="@blog.ImageURL" *@ />
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        @blog.Name
+                    </h5>
+                    <p class="description" id="description">
+                        <b>@blog.Description</b>
+                    </p>
+                    <p class="card-text">
+                        @GetAuthorName(blog.UserId)
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
 }
 
 
-<style>
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
+@code {
+
+    [Parameter] public List<BlogDto> Blogs { get; set; }
+    [Parameter] public bool IsMyBlog { get; set; }
+
+    private string _href { get; set; }
+
+    private Dictionary<Guid, string> AuthorNames = new Dictionary<Guid, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAuthorNamesAsync();
+        
     }
 
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
+    private string GetHref(int blogId)
+    {
+        if (IsMyBlog)
+        {
+          return  _href = $"/getMyBlogById/{blogId}";
+        }
+
+        return  _href = $"get-not-related-blog-by-id/{blogId}";
     }
 
-    tr:nth-child(even) {
-        background-color: #dddddd;
+    private async Task LoadAuthorNamesAsync()
+    {
+        foreach (var blog in Blogs)
+        {
+            if (!AuthorNames.ContainsKey(blog.UserId))
+            {
+                var authorName = await GetAuthorFullnameAsync(blog.UserId);
+                AuthorNames[blog.UserId] = authorName;
+            }
+        }
     }
-</style>
+
+    private string GetAuthorName(Guid userId)
+    {
+        return AuthorNames.GetValueOrDefault(userId, "Loading...");
+    }
+
+    private async Task<string> GetAuthorFullnameAsync(Guid authorId)
+    {
+        var author = await UserIntegration.GetUserById(authorId);
+        return $"{author?.Firstname} {author?.Lastname}";
+    }
+}

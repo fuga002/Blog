@@ -1,6 +1,9 @@
 ﻿@page "/all-posts"
-
-@if (_posts != null || _posts.Count > 0)
+@if (_posts == null || _posts.Count == 0)
+{
+    <p>Loading blogs...</p>
+}
+else
 {
     foreach (var post in _posts)
     {

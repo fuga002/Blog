@@ -4,7 +4,7 @@
 @attribute [Authorize]
 @if (_blogDtos?.Count is not 0)
 {
-    <BlogTableComponent Models="_blogDtos"></BlogTableComponent>
+    <BlogTableComponent Blogs="_blogDtos" IsMyBlog="false"></BlogTableComponent>
 }
 
 @if (IsShow)

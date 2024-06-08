@@ -10,7 +10,7 @@
     }
     else
     {
-        <BlogTableComponent Models="_blogDtos" ></BlogTableComponent>
+        <BlogTableComponent Blogs="_blogDtos" IsMyBlog="true" ></BlogTableComponent>
     }
 }
 
@@ -21,10 +21,13 @@
     private string? _errorMessage { get; set; }
     private bool _check { get; set; }
     private CustomAuthStateProvider _authState;
+    private string AuthorFullname;
     protected override async Task OnInitializedAsync()
     {
         UserId = await UserSettings.GetUserId();
         (_blogDtos, _errorMessage, _check) = await BlogIntegration.GetMyBlogs(UserId);
+
+        var user = await UserIntegration.GetUserById(UserId);
         _authState = (CustomAuthStateProvider)AuthenticationState;
 
         var state = await _authState.GetAuthenticationStateAsync();

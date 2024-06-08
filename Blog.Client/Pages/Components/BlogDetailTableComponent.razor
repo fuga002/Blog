@@ -1,0 +1,23 @@
+﻿<h3 class="mb-5">Product Details</h3>
+<div class="col-md-6 mb-4">
+    <img class="img-fluid" @*src="@Blog.ImageURL" *@ src="https://img.freepik.com/free-photo/online-message-blog-chat-communication-envelop-graphic-icon-concept_53876-139717.jpg" />
+</div>
+<div class="col-md-6">
+    <h3>@Blog.Name</h3>
+    <p class="mb-4">@Blog.Description</p>
+    <p class="mb-4">
+        <b>
+            @AuthorName
+        </b>
+    </p>
+    <div>
+        <button class="btn btn-success" 
+        ><b>See Blog Posts</b></button>
+    </div>
+</div>
+
+@code
+{
+    [Parameter] public BlogDto Blog { get; set; }
+    [Parameter] public string AuthorName { get; set; }
+}
