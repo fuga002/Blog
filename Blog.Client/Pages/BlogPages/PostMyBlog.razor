@@ -1,29 +1,49 @@
-﻿@page "/postmyblog/{userId:guid}"
+﻿@page "/postmyblog"
+@attribute [Authorize]
 @using Blog.Common.Models.Blog
-<EditForm Model="model" OnValidSubmit="Create">
-    <DataAnnotationsValidator />    
-    <ValidationSummary />
-    <div class="form-group">
-        <label>
-            Name:
-            <InputText @bind-Value="@model.Name" class="form-control"></InputText>
-        </label>
-    </div>
-    <div class="form-group">
-        <label>
-            Description:
-            <InputText @bind-Value="@model.Description" class="form-control"></InputText>
-        </label>
-    </div>
-    <button type="submit" class="btn btn-dark">Create</button>
-</EditForm>
+@using Microsoft.AspNetCore.Authorization
+@if (_check)
+{
+    <EditForm Model="model" OnValidSubmit="Create">
+        <DataAnnotationsValidator />    
+        <ValidationSummary />
+        <div class="form-group">
+            <label>
+                Name:
+                <InputText @bind-Value="@model.Name" class="form-control"></InputText>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Description:
+                <InputText @bind-Value="@model.Description" class="form-control"></InputText>
+            </label>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-dark">Create</button>
+    </EditForm>
+}
+else
+{
+    <ErrorDisplay ErrorMessage="_errorMessage"></ErrorDisplay>
+}
+
 
 @code {
-    [Parameter]
-   public Guid userId { get; set; }
+   private Guid userId { get; set; }
     CreateBlogModel model = new CreateBlogModel();
+    private BlogDto? _blog { get; set; }
+    private string? _errorMessage { get; set; }
+    private bool _check { get; set; } 
+    protected override async Task OnInitializedAsync()
+    {
+        userId = await UserSettings.GetUserId();
+        _check = true;
+    }
+
     async Task Create()
     {
-       await BlogIntegration.CreateMyBlog(userId,model);
+      (_blog,_errorMessage,_check) =   await BlogIntegration.CreateMyBlog(userId,model);
+        if (_check) NavigationManager.NavigateTo("/myBlogs");
     }
 }

@@ -1,0 +1,48 @@
+﻿@page "/delete-my-blog/{BlogId:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@if (_check)
+{
+        <div class="form-group">
+            <label>
+                Name:
+                <input  readonly @bind="@_blog.Name" class="form-control"></input>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Description:
+            <input readonly @bind="@_blog.Description" class="form-control"></input>
+            </label>
+        </div>
+        <br/>
+    <button type="submit" class="btn btn-danger" @onclick="UpdateMyBlogClicked">Delete</button>
+}
+else
+{
+    <ErrorDisplay ErrorMessage="@_errorMessage"></ErrorDisplay>
+}
+
+
+@code {
+    [Parameter] public int BlogId { get; set; }
+    private BlogDto? _blog { get; set; } = new();
+    private Guid _userId { get; set; }
+    private string? _errorMessage { get; set; }
+    private bool _check { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _userId = await UserSettings.GetUserId();
+        (_blog,_errorMessage,_check) = await BlogIntegration.GetMyBlogById(_userId, BlogId);
+    }
+
+    private async Task UpdateMyBlogClicked()
+    {
+        _check = false;
+        (_errorMessage, _check) = await BlogIntegration.DeleteMyBlog(_userId, BlogId);
+        if (_check)
+        {
+            NavigationManager.NavigateTo("/myBlogs");
+        }
+    }
+}

@@ -16,7 +16,7 @@ public class UserSettings
     {
         var state = await _stateProvider.GetAuthenticationStateAsync();
 
-        var userId = state.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var userId = state.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
 
         return Guid.Parse(userId);
     }

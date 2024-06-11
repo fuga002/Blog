@@ -1,5 +1,4 @@
 ﻿@page "/myBlogs"
-@using Blog.Client.Pages.Components
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @if (_check)
@@ -11,6 +10,8 @@
     else
     {
         <BlogTableComponent Blogs="_blogDtos" IsMyBlog="true" ></BlogTableComponent>
+        <br/>
+        <a href="/postmyblog" class="btn btn-success">Add Blog</a>
     }
 }
 

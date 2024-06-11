@@ -1,4 +1,12 @@
-﻿<h3 class="mb-5">Product Details</h3>
+﻿<div>
+    <h3 class="mb-5">Blog Details</h3>
+    @if (isMyBlog)
+    {
+        <a href="/edit-my-blog/@Blog.Id" class="btn btn-primary">Edit my blog</a>
+        <a href="/delete-my-blog/@Blog.Id" class="btn btn-danger">Delete my blog</a>
+    }
+</div>
+<br/>
 <div class="col-md-6 mb-4">
     <img class="img-fluid" @*src="@Blog.ImageURL" *@ src="https://img.freepik.com/free-photo/online-message-blog-chat-communication-envelop-graphic-icon-concept_53876-139717.jpg" />
 </div>
@@ -11,8 +19,8 @@
         </b>
     </p>
     <div>
-        <button class="btn btn-success" 
-        ><b>See Blog Posts</b></button>
+        <p>Posts</p>
+        <PostTableComponent _posts="@Blog.Posts"></PostTableComponent>
     </div>
 </div>
 
@@ -20,4 +28,11 @@
 {
     [Parameter] public BlogDto Blog { get; set; }
     [Parameter] public string AuthorName { get; set; }
+    private Guid _userId { get; set; }
+    private bool isMyBlog { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _userId = await UserSettings.GetUserId();
+        isMyBlog = _userId == Blog.UserId;
+    }
 }

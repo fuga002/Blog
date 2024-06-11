@@ -1,11 +1,13 @@
 ﻿using Blog.Common.Models.Blog;
 using Blog.Services.Api;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers;
 
 [Route("api/users/{userId:guid}/[controller]")]
 [ApiController]
+[Authorize]
 public class BlogsController : ControllerBase
 {
     private readonly BlogService _blogService;
