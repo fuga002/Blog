@@ -16,6 +16,7 @@ public static class ServiceExtension
 {
     public static void AddServices(this IServiceCollection services, WebApplicationBuilder builder)
     {
+        services.AddScoped<PhotoService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBlogRepository, BlogRepository>();
         services.AddScoped<IPostRepository, PostRepository>();

@@ -85,6 +85,36 @@ public class UsersController : ControllerBase
         }
     }
 
+    [HttpPut("{userId:guid}/add-photo")]
+    [Authorize]
+    public async Task<IActionResult> AddUserPhoto(Guid userId, IFormFile file)
+    {
+        try
+        {
+            var userDto = await _userService.AddUserPhoto(userId, file);
+            return Ok(userDto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("{userId:guid}/delete-photo")]
+    [Authorize]
+    public async Task<IActionResult> DeleteUserPhoto(Guid userId, string publicId)
+    {
+        try
+        {
+            var userDto = await _userService.DeletePhoto(userId, publicId);
+            return Ok(userDto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
     [HttpDelete("{userId:guid}")]
     [Authorize]
     public async Task<IActionResult> DeleteUser(Guid userId)

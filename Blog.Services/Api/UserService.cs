@@ -4,6 +4,7 @@ using Blog.Common.Statics;
 using Blog.Data.Entities;
 using Blog.Data.Repositories;
 using Blog.Services.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Services.Api;
@@ -12,11 +13,13 @@ public class UserService
 {
     private readonly IUserRepository _userRepository;
     private readonly JwtTokenService _jwtTokenService;
+    private readonly PhotoService _photoService;
 
-    public UserService(IUserRepository userRepository, JwtTokenService jwtTokenService)
+    public UserService(IUserRepository userRepository, JwtTokenService jwtTokenService, PhotoService photoService)
     {
         _userRepository = userRepository;
         _jwtTokenService = jwtTokenService;
+        _photoService = photoService;
     }
 
     public async Task<List<UserDto>> GetAllUsers()
@@ -87,6 +90,39 @@ public class UserService
         {
             await _userRepository.Update(user);
         }
+        return user.ParseToModel();
+    }
+
+    public async Task<UserDto> AddUserPhoto(Guid userId, IFormFile file)
+    {
+        var user = await _userRepository.GetById(userId);
+
+        var uploadResult = await _photoService.AddPhoto(file);
+
+        user.PhotoOptions = new List<PhotoOption>()
+        {
+            new PhotoOption()
+            {
+                PhotoUrl = uploadResult.SecureUrl.AbsoluteUri,
+                PublicId = uploadResult.PublicId,
+                UserId = user.Id
+            }
+        };
+
+        await _userRepository.Update(user);
+
+        return user.ParseToModel();
+    }
+
+    public async Task<UserDto> DeletePhoto(Guid userId, string publicId)
+    {
+        var user = await _userRepository.GetById(userId);
+
+        await _photoService.DeletePhoto(publicId);
+
+        var photoOption = user.PhotoOptions?.FirstOrDefault(p => p.PublicId == publicId);
+        user.PhotoOptions?.Remove(photoOption!);
+        await _userRepository.Update(user);
         return user.ParseToModel();
     }
 

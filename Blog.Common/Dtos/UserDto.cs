@@ -1,4 +1,6 @@
-﻿namespace Blog.Common.Dtos;
+﻿using Blog.Data.Entities;
+
+namespace Blog.Common.Dtos;
 
 public class UserDto
 {
@@ -10,4 +12,6 @@ public class UserDto
     public string? PhotoUrl { get; set; }
 
     public List<BlogDto>? Blogs { get; set; }
+
+    public List<PhotoOptionDto> PhotoOptions { get; set; }
 }

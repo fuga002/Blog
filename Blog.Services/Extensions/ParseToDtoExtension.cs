@@ -1,7 +1,6 @@
 ﻿using Blog.Common.Dtos;
 using Blog.Data.Entities;
 using Mapster;
-using MapsterMapper;
 
 namespace Blog.Services.Extensions;
 
@@ -16,10 +15,29 @@ public static class ParseToDtoExtension
             Lastname = user.Lastname,
             Username = user.Username,
             CreatedAt = user.CreatedAt,
-            PhotoUrl = user.PhotoUrl,
+            PhotoOptions = user.PhotoOptions.ParseModels()!,
             Blogs = user.Blogs.ParseModels()
         };
     }
+
+    public static PhotoOptionDto ParseModel(this PhotoOption option)
+    {
+        PhotoOptionDto model = option.Adapt<PhotoOptionDto>();
+        return model;
+    }
+
+    public static List<PhotoOptionDto> ParseModels(this List<PhotoOption>? options)
+    {
+        var dtos = new List<PhotoOptionDto>();
+        if (options == null || options.Count == 0) return new List<PhotoOptionDto>();
+        foreach (var option in options)
+        {
+            dtos.Add(option.ParseModel());
+        }
+
+        return dtos;
+    }
+
 
     public static List<UserDto> ParseModels(this List<User>? users)
     {

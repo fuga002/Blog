@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Blog.Data.Entities;
 
@@ -15,7 +16,9 @@ public class User
     [Required]
     public string PasswordHash { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public string? PhotoUrl { get; set; }
+    
+    public virtual  List<PhotoOption>? PhotoOptions { get; set; }
+
     [Required]
 
     public string Role { get; set; }
