@@ -31,15 +31,8 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetUserById(Guid userId)
     {
-        try
-        {
             var user = await _userService.GetUserById(userId);
             return Ok(user);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
     }
 
     [HttpPost]

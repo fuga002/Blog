@@ -2,6 +2,7 @@
 using Blog.Common.Models.User;
 using Blog.Common.Statics;
 using Blog.Data.Entities;
+using Blog.Data.Exceptions;
 using Blog.Data.Repositories;
 using Blog.Services.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ public class UserService
 
     public async Task<UserDto> GetUserById(Guid id)
     {
-        var user = await _userRepository.GetById(id);
+        var user = await _userRepository.GetById(id) ?? throw new UserNotFoundException(id);
         return user.ParseToModel();
     }
 
