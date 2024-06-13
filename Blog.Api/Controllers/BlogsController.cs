@@ -1,4 +1,5 @@
-﻿using Blog.Common.Models.Blog;
+﻿using Blog.Common.Dtos;
+using Blog.Common.Models.Blog;
 using Blog.Services.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -96,6 +97,35 @@ public class BlogsController : ControllerBase
         {
             var blog = await _blogService.UpdateBlog(userId, blogId, model);
             return Ok(blog);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("{blogId:int}/add-photo")]
+    public async Task<IActionResult> AddBlogPhoto(Guid userId, int blogId, IFormFile file)
+    {
+        try
+        {
+            var blogDto = await _blogService.AddBlogPhoto(userId, blogId, file);
+            return Ok(blogDto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+
+    [HttpPut("{blogId:int}/change-photo")]
+    public async Task<IActionResult> ChangeBlogPhoto(Guid userId, int blogId, IFormFile file)
+    {
+        try
+        {
+            var blogDto = await _blogService.ChangeBlogPhoto(userId, blogId, file);
+            return Ok(blogDto);
         }
         catch (Exception e)
         {

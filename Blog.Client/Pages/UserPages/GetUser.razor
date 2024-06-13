@@ -1,26 +1,87 @@
 ﻿@page "/getUser/{UserId:guid}"
+@using System.Net.Http.Headers
+@using System.ComponentModel.DataAnnotations
 @if (_user is not null)
 {
-    <div class="card">
-        <img src="img_avatar.jpg" alt="Avatar" style="width:100%">
-        <div class="container">
-            <h4><b>Full name : @(_user.Firstname +" " + _user.Lastname)</b></h4> 
-            <p>Username : @_user.Username</p> 
-            <p>Created at : @_user.CreatedAt.ToString("M/d/yy")</p> 
+    <section>
+        
+        <div class="card">
+            <img src="img_avatar.jpg" alt="Avatar" style="width:100%">
+            <div class="container">
+                <h4><b>Full name: @(_user.Firstname + " " + _user.Lastname)</b></h4>
+                <p>Username: @_user.Username</p>
+                <p>Created at: @_user.CreatedAt.ToString("M/d/yy")</p>
+            </div>
+            <button class="btn btn-primary" @onclick="AddingPhotoButtonClicked">@ButtonTitle</button>
         </div>
-    </div>
 
-
-    @*<a class="btn btn-primary" href="notRelatedAllBlogs/@UserId">See All blogs</a>*@
+        
+        @if (IsShow)
+        {
+                <div class="upload-form">
+                    <InputFile OnChange="HandleSelected" accept="image/*" />
+                    <br>
+                    <button @onclick="UploadImg">Upload Image</button>
+                </div>
+        }
+    </section>
+}
+else
+{
+    <ErrorDisplay ErrorMessage="@_errorMessage"></ErrorDisplay>
 }
 @code {
     [Parameter]
     public Guid UserId { get; set; }
 
+    private string ButtonTitle { get; set; } = "Add Photo";
+    private bool IsShow { get; set; }
+
+
     UserDto? _user = new();
+
+    string? _errorMessage { get; set; }
+    bool check;
+
     protected override async Task OnInitializedAsync()
     {
+        IsShow = false;
         _user = await UserIntegration.GetUserById(userId: UserId);
+
+        if (_user.PhotoOptions.Any()) ButtonTitle = "Change Photo";
+
+    }
+
+    private void AddingPhotoButtonClicked()
+    {
+        IsShow = true;
+    }
+
+    [Required]
+    private IBrowserFile? selectedFile;
+
+    private void HandleSelected(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+    }
+    private async Task UploadImg()
+    {
+        if (selectedFile != null)
+        {
+            var content = new MultipartFormDataContent();
+            var stream = selectedFile.OpenReadStream(long.MaxValue);
+            var fileContent = new StreamContent(stream);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(selectedFile.ContentType);
+            content.Add(fileContent, "file", selectedFile.Name);
+
+
+            (_user, _errorMessage, check) = await UserIntegration.UploadImg(UserId, content);
+
+          if (check)
+          {
+                NavigationManager.NavigateTo($"/getUser/{UserId}");
+          }
+        }
     }
 
 
@@ -41,4 +102,15 @@
     .container {
         padding: 2px 16px;
     }
+
+    input[type="file"] {
+        margin: 20px 0;
+    }
+
+    section {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
 </style>

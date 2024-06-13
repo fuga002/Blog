@@ -6,6 +6,8 @@ using Blog.Client.ClientServices.Helpers;
 using Blog.Common.Dtos;
 using Blog.Common.Models.User;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 
 namespace Blog.Client.ClientServices;
 
@@ -93,6 +95,23 @@ public class UserIntegration
         _navigationManager.NavigateTo("allUsers");
     }
 
+
+    public async Task<Tuple<UserDto?, string?, bool>> UploadImg(Guid userId, MultipartFormDataContent content)
+    {
+        await CheckTokenExist();
+
+        var response = await _httpClient.PutAsJsonAsync($"api/users/{userId}/add-photo", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var userDto = await response.Content.ReadFromJsonAsync<UserDto>();
+            return new(userDto, String.Empty, true);
+        }
+
+        var errorMessage = await response.Content.ReadAsStringAsync();
+        return new(null, errorMessage, false);
+
+    }
 
     private async Task<string?> GetToken()
     {

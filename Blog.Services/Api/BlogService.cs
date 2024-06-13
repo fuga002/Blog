@@ -3,6 +3,7 @@ using Blog.Common.Models.Blog;
 using Blog.Data.Entities;
 using Blog.Data.Repositories;
 using Blog.Services.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace Blog.Services.Api;
 
@@ -10,10 +11,12 @@ public class BlogService
 {
     private readonly IBlogRepository _blogRepository;
     private readonly IUserRepository _userRepository;
-    public BlogService(IBlogRepository blogRepository, IUserRepository userRepository)
+    private readonly PhotoService _photoService;
+    public BlogService(IBlogRepository blogRepository, IUserRepository userRepository, PhotoService photoService)
     {
         _blogRepository = blogRepository;
         _userRepository = userRepository;
+        _photoService = photoService;
     }
 
     //These methods for not related blogs
@@ -83,6 +86,44 @@ public class BlogService
         }
         
         if(check) await _blogRepository.Update(blog);
+        return blog.ParseToModel();
+    }
+
+    public async Task<BlogDto> AddBlogPhoto(Guid userId, int blogId, IFormFile file)
+    {
+        var blog = await GetBlogById(userId, blogId);
+
+        var uploadResult = await _photoService.AddPhoto(file);
+
+        blog.PhotoUrl = uploadResult.SecureUrl.AbsoluteUri;
+        blog.PhotoPublicId = uploadResult.PublicId;
+
+        await _blogRepository.Update(blog);
+        return blog.ParseToModel();
+    }
+
+    public async Task<BlogDto> ChangeBlogPhoto(Guid userId, int blogId, IFormFile? file)
+    {
+        var blog = await GetBlogById(userId, blogId);
+
+        if (file != null)
+        {
+            if (!string.IsNullOrWhiteSpace(blog.PhotoPublicId))
+            {
+                await _photoService.DeletePhoto(blog.PhotoPublicId);
+            }
+
+            var uploadImgResult = await _photoService.AddPhoto(file);
+
+            blog.PhotoUrl = uploadImgResult.SecureUrl.AbsoluteUri;
+            blog.PhotoPublicId = uploadImgResult.PublicId;
+            await _blogRepository.Update(blog);
+        }
+        else
+        {
+            throw new Exception("Please, input photo :)");
+        }
+
         return blog.ParseToModel();
     }
 

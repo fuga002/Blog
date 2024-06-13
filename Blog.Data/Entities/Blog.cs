@@ -9,6 +9,9 @@ public class Blog
   public string Name { get; set; }
   [Required]
   public string Description { get; set; }
+
+  public string? PhotoUrl { get; set; }
+  public string? PhotoPublicId { get; set; }
   
   public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 

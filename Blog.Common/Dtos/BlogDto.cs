@@ -9,5 +9,8 @@ public class BlogDto
     public Guid UserId { get; set; }
     public DateTime CreatedDate { get; set; }
 
+    public string? PhotoUrl { get; set; }
+    public string? PhotoPublicId { get; set; }
+
     public List<PostDto>? Posts { get; set; }
 }

@@ -87,7 +87,7 @@ public class UsersController : ControllerBase
 
     [HttpPut("{userId:guid}/add-photo")]
     [Authorize]
-    public async Task<IActionResult> AddUserPhoto(Guid userId, IFormFile file)
+    public async Task<IActionResult> AddUserPhoto(Guid userId, [FromForm] IFormFile file)
     {
         try
         {
