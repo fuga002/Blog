@@ -1,5 +1,6 @@
 ﻿using Blog.Data.Context;
 using Blog.Data.Entities;
+using Blog.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.Repositories;
@@ -22,7 +23,6 @@ public class UserRepository: IUserRepository
     public async Task<User> GetById(Guid id)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-        if (user is null) throw new Exception("User not found");
         return user;
     }
 
