@@ -1,6 +1,7 @@
 ﻿using Blog.Common.Dtos;
 using Blog.Common.Models.Post;
 using Blog.Data.Entities;
+using Blog.Data.Entities.PostEntity;
 using Blog.Data.Repositories;
 using Blog.Services.Extensions;
 
@@ -57,13 +58,15 @@ public class PostService
         var post = new Post()
         {
             Title = model.Title,
-            Content = model.Content,
             AuthorFullName = $"{user.Firstname} {user.Lastname}",
             BlogId = blogId
         };
+
+        post.Contents.Add(model.Content);
         await _postRepository.Add(post);
         return post.ParseToModel();
     }
+
 
     public async Task<PostDto> UpdatePost(Guid userId, int blogId, int postId, UpdatePostModel model)
     {
@@ -75,13 +78,24 @@ public class PostService
             check = true;
         }
 
-        if (!string.IsNullOrWhiteSpace(model.Content))
-        {
-            post.Content = model.Content;
-            check = true;
-        }
         if(check)
             await _postRepository.Update(post);
+        return post.ParseToModel();
+    }
+
+    public async Task<PostDto> AddContentToPost(Guid userId, int blogId, int postId, string content)
+    {
+        var post = await CheckPost(userId, blogId, postId);
+        var check = false;
+        if (!string.IsNullOrWhiteSpace(content))
+        {
+            post.Contents.Add(content);
+            check = true;
+        }
+
+        if (check)
+            await _postRepository.Update(post);
+
         return post.ParseToModel();
     }
 

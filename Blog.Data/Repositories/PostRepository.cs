@@ -1,5 +1,5 @@
 ﻿using Blog.Data.Context;
-using Blog.Data.Entities;
+using Blog.Data.Entities.PostEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.Repositories;

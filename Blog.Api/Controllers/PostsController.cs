@@ -1,4 +1,5 @@
-﻿using Blog.Common.Models.Post;
+﻿using Blog.Common.Dtos;
+using Blog.Common.Models.Post;
 using Blog.Services.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -95,6 +96,20 @@ public class PostsController : ControllerBase
         {
             var post = await _postService.UpdatePost(userId,blogId,postId,model);
             return Ok(post);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("{postId:int}/add-content")]
+    public async Task<IActionResult> AddContentToPost(Guid userId, int blogId, int postId, string content)
+    {
+        try
+        {
+            var postDto = await _postService.AddContentToPost(userId, blogId, postId, content);
+            return Ok(postDto);
         }
         catch (Exception e)
         {

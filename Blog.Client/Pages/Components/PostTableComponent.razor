@@ -1,10 +1,11 @@
-﻿@foreach (var post in _posts)
+﻿@foreach (var post in Blog.Posts!)
 {
     <div class="card">
         <h5 class="card-header">@post.AuthorFullName</h5>
         <div class="card-body">
             <h5 class="card-title"><strong>@post.Title</strong></h5>
-            <p class="card-text">@post.Content</p>
+            <p class="card-text">@if(post.Contents?.Count > 0 || post.Contents != null)
+                                 {@post.Contents[0]}</p>
             <a href="/get-post-by-id/@post.Id" class="btn btn-primary">See Post</a>
         </div>
     </div>
@@ -12,6 +13,5 @@
 }
 
 @code {
-    [Parameter]
-    public List<PostDto> _posts { get; set; }
+    [Parameter] public BlogDto Blog { get; set; }
 }

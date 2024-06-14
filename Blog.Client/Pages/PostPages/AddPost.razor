@@ -1,0 +1,54 @@
+﻿@page "/add-my-post/{BlogId:int}"
+@using Blog.Common.Models.Post
+@attribute [Authorize]
+
+
+    <EditForm Model="Model" OnValidSubmit="AddMyPost">
+        <DataAnnotationsValidator />    
+        <ValidationSummary />
+        <div class="form-group">
+            <label>
+                Title:
+                <InputText @bind-Value="@Model.Title" class="form-control"></InputText>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Content:
+                <InputTextArea @bind-Value="@Model.Content" class="form-control"></InputTextArea>
+            </label>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-success">Create</button>
+    </EditForm>
+
+@if (!Check)
+{
+    <ErrorDisplay ErrorMessage="@ErrorMessage"></ErrorDisplay>
+}
+
+
+
+
+@code {
+    private CreatePostModel Model { get; set; } = new();
+    [Parameter] public int BlogId { get; set; }
+    private PostDto? PostDto { get; set; }
+    private string? ErrorMessage { get; set; }
+    private bool Check { get; set; }
+
+  
+
+    private async Task AddMyPost()
+    {
+        var userId = await UserSettings.GetUserId();
+        (PostDto, ErrorMessage, Check) = await PostIntegration.AddPost(userId, BlogId, Model);
+
+        if (Check)
+        {
+            NavigationManager.NavigateTo($"/getMyBlogById/{BlogId}");
+        }
+
+    }
+
+}

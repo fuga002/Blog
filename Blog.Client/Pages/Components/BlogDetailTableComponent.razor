@@ -20,7 +20,11 @@
     </p>
     <div>
         <p>Posts</p>
-        <PostTableComponent _posts="@Blog.Posts"></PostTableComponent>
+        @if (isMyBlog)
+        {
+            <a class="btn btn-success" href="/add-my-post/@Blog.Id">Add Post</a>
+        }
+        <PostTableComponent Blog="Blog"></PostTableComponent>
     </div>
 </div>
 

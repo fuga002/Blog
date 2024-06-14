@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Blog.Data.Entities.PostEntity;
 
 namespace Blog.Data.Entities;
 

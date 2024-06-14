@@ -1,5 +1,6 @@
 ﻿using Blog.Common.Dtos;
 using Blog.Data.Entities;
+using Blog.Data.Entities.PostEntity;
 using Mapster;
 
 namespace Blog.Services.Extensions;

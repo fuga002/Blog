@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Data.Entities;
+namespace Blog.Data.Entities.PostEntity;
 
 public class Post
 {
@@ -8,12 +8,14 @@ public class Post
     public int Id { get; set; }
     [Required]
     public string Title { get; set; }
-    [Required]
-    public string Content { get; set; }
-   
+
+    public List<string>? Contents { get; set; } = new List<string>();
+
+    public virtual List<PostPhotoOption> PhotoList { get; set; }
+
     public string? FileUrl { get; set; }
 
-    public DateTime CreatedDate { get; set; }  = DateTime.UtcNow;
+    public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     [Required]
     public string AuthorFullName { get; set; }
 
