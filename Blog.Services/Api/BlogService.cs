@@ -144,7 +144,7 @@ public class BlogService
 
     private async Task IsExist(string name)
     {
-        var blog = await _blogRepository.GetByName(name);
+        var blog = await _blogRepository.GetByName(name.ToLower());
         if (blog is not null) throw new Exception($"This name \"{name}\" is already exist ");
     }
 
